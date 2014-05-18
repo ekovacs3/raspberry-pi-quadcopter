@@ -1,4 +1,6 @@
-import time
+import math
+#import smbus
+import thread
 
 power_mgmt_1 = 0x6b
 power_mgmt_2 = 0x6c
@@ -26,20 +28,38 @@ def read_word_2c(adr):
         return val
 
 #These two funcitons use accelerometer data to approximate rotation
-def get_y_rotation(x,y,z):
-    radians = math.atan2(x, dist(y,z))
-    return -math.degrees(radians)
+def get_y_rotation():
+	x = get_x_accel
+	y = get_y_accel
+	z = get_z_accel
+	radians = math.atan2(x, dist(y,z))
+	return -math.degrees(radians)
 
-def get_x_rotation(x,y,z):
-    radians = math.atan2(y, dist(x,z))
-    return math.degrees(radians)
+def get_x_rotation():
+	x = get_x_accel
+	y = get_y_accel
+	z = get_z_accel
+	radians = math.atan2(y, dist(x,z))
+	return math.degrees(radians)
 
 
 class Gyro:
+
+	def __init__():
+		while startprogram != True:
+			try:
+				bus.write_byte_data(address, power_mgmt_1, 0)
+				startprogram = True
+			except IOError:
+				print "there was an IOError"
+			time.sleep(.5)
+
+
 	#All gyro angular velocity is in deg/s
 	def get_x_angular_velocity():
 		try:
 			gyro_xout = read_word_2c(0x43)
+			print g
 			return (gyro_xout / 131)
 		except IOError:
 			print "There was an IOError"
@@ -73,7 +93,7 @@ class Gyro:
 		except IOError:
 			print "There was an IOError"
 
-	def get_y_accel():
+	def get_z_accel():
 		try:
 			accel_yout = read_word_2c(0x3d)
 			return (accel_yout / 16384.0)

@@ -15,10 +15,11 @@ class Motor(PWM.Servo):
 			speed = 1
 		speed += 1
 		speed *= 1000
+                print(int(speed))
 		return int(speed)
 
 	def set(self, speed):
-		self.set_servo(self.pin, scale(speed))
+		self.set_servo(self.pin, self.scale(speed))
 
 	def stop(self):
 		self.stop_servo(self.pin)

@@ -6,16 +6,16 @@ fr = motor.Motor(23)
 bl = motor.Motor(24)
 br = motor.Motor(25)
 
-fl.set(1)
-fr.set(1)
-bl.set(1)
-br.set(1)
+fl.high()
+fr.high()
+bl.high()
+br.high()
 
 time.sleep(4)
-fl.set(0)
-fr.set(0)
-bl.set(0)
-br.set(0)
+fl.low()
+fr.low()
+bl.low()
+br.low()
 
 time.sleep(4)
 
@@ -32,41 +32,41 @@ while n <= .12:
 	time.sleep(.5)
 	
 while True:
-	while n <= .15:
+	while n <= .50:
 		fl.set(n)
 		fr.set(n)
 		bl.set(n)
 		br.set(n)	
 		print(n)
 		n += .03
-		time.sleep(.08)
+		time.sleep(.3)
 	
-	while n >= .11:
+	while n >= .2:
 		fl.set(n)
 		fr.set(n)
 		bl.set(n)
 		br.set(n)
 		print(n)
 		n -= .02
-		time.sleep(.08)
+		time.sleep(.3)
 
-	while n <= .15:
+	while n <= 1:
 		fl.set(n)
 		fr.set(n)
 		bl.set(n)
 		br.set(n)	
 		print(n)
 		n += .03
-		time.sleep(.08)
+		time.sleep(.3)
 	
-	while n >= .11:
+	while n >= .2:
 		fl.set(n)
 		fr.set(n)
 		bl.set(n)
 		br.set(n)
 		print(n)
 		n -= .02
-		time.sleep(.08)
+		time.sleep(.3)
 
 
 fl.stop()

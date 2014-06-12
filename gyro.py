@@ -3,14 +3,6 @@ import smbus
 import thread
 import time
 
-power_mgmt_1 = 0x6b
-power_mgmt_2 = 0x6c
-x_rotation_register = 0x43
-y_rotation_retister = 0x45
-z_rotation_register = 0x47
-x_accel_register = 0x3b
-y_accel_register = 0x3d
-z_accel_register = 0x3f
 
 def read_byte(adr):
     return bus.read_byte_data(address, adr)
@@ -50,6 +42,7 @@ def get_x_angular_velocity():
         return (gyro_xout / 131)
     except IOError:
         print "There was an IOError"
+        return 0
 
 def get_y_angular_velocity():
     try:
@@ -57,14 +50,16 @@ def get_y_angular_velocity():
         return (gyro_yout / 131)
     except IOError:
         print "There was an IOError"
-
+        return 0
+    
 def get_z_angular_velocity():
     try:
         gyro_zout = read_word_2c(0x47)
         return (gyro_zout / 131)
     except IOError:
         print "There was an IOError"
-
+        return 0
+    
 #all acceleration values are in g's
 def get_x_accel():
     try:
@@ -72,52 +67,65 @@ def get_x_accel():
         return (accel_xout / 16384.0)
     except IOError:
         print "There was an IOError"
-
+        return 0
+    
 def get_y_accel():
     try:
         accel_yout = read_word_2c(0x3d)
         return (accel_yout / 16384.0)
     except IOError:
         print "There was an IOError"
-
+        return 0
+    
 def get_z_accel():
     try:
-        accel_yout = read_word_2c(0x3d)
+        accel_yout = read_word_2c(0x3f)
         return (accel_yout / 16384.0)
     except IOError:
         print "There was an IOError"
+        return 0
+    
+def dist(a,b):
+    return math.sqrt((a*a)+(b*b))
+
+def initialize_gyro():
+    ready = False
+    while ready != True:
+        try:
+            bus.write_byte_data(address, power_mgmt_1, 0)
+            ready = True
+        except IOError:
+            print "there was an IOError"
+            
+def refresh_values():
+    #x_angle += get_x_angular_velocity() * (time.time() - self.lasttime
+    #y_angle += get_y_angular_velocity() * (time.time() - self.lasttime
+    #z_angle += get_z_angular_velocity() * (time.time() - self.lasttime
+    lasttime = time.time()
+     
+def reset():
+    global x_angle
+    global y_angle
+    global z_angle
+    x_angle = get_x_rotation()
+    y_angle = get_y_rotation()
+    z_angle = 0
+
+def print_values():
+    print "x_angle:", x_angle
+    print "y_angle:", y_angle
+    print "z_angle:", z_angle
 
 
-class Gyro:
-    bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
-    address = 0x68       # This is the address value read via the i2cdetect command
+bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
+address = 0x68       # This is the address value read via the i2cdetect command
 
- 
-    def __init__(self):
-        self.ready = False
-        while self.ready != True:
-            try:
-                self.bus.write_byte_data(self.address, 0x6b, 0)
-                startprogram = True
-            except IOError:
-                print "there was an IOError"
-            self.lasttime = time.time()
+power_mgmt_1 = 0x6b
+power_mgmt_2 = 0x6c
 
+initialize_gyro()
 
-    def refresh_values(self):
-        self.x_angle += get_x_angular_velocity() * (time.time() - self.lasttime)
-        self.y_angle += get_y_angular_velocity() * (time.time() - self.lasttime)
-        self.z_angle += get_z_angular_velocity() * (time.time() - self.lasttime)
-
-        self.lasttime = time.time()
-        
-    def reset_gyro(self):
-        self.x_angle = get_x_rotation()
-        self.y_angle = get_y_rotation()
-        self.z_angle = 0
-
-    def print_values(self):
-        print "X angle:", self.x_angle
-        print "Y angle:", self.y_angle
-        print "Z angle:", self.z_angle
+x_angle = 0
+y_angle = 0
+z_angle = 0
 

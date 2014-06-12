@@ -19,8 +19,6 @@ br.low()
 
 time.sleep(4)
 
-print("please enter a number between 1000 and 2000")
-
 n = 0
 while n <= .12:
 	fl.set(n)

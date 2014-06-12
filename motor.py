@@ -14,8 +14,9 @@ class Motor(PWM.Servo):
 		elif speed>1:
 			speed = 1
 		speed += 1
-		speed *= 1000
-		return int(speed)
+		speed = int(speed*100)*10
+		
+		return speed
 
 	def set(self, speed):
 		self.set_servo(self.pin, self.scale(speed))

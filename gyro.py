@@ -98,18 +98,24 @@ def initialize_gyro():
             print "there was an IOError"
             
 def refresh_values():
-    #x_angle += get_x_angular_velocity() * (time.time() - self.lasttime
-    #y_angle += get_y_angular_velocity() * (time.time() - self.lasttime
-    #z_angle += get_z_angular_velocity() * (time.time() - self.lasttime
+    global x_angle
+    global y_angle
+    global z_angle
+    global lasttime
+    x_angle += get_x_angular_velocity() * (time.time() - lasttime)
+    y_angle += get_y_angular_velocity() * (time.time() - lasttime)
+    z_angle += get_z_angular_velocity() * (time.time() - lasttime)
     lasttime = time.time()
      
 def reset():
     global x_angle
     global y_angle
     global z_angle
+    global lasttime
     x_angle = get_x_rotation()
     y_angle = get_y_rotation()
     z_angle = 0
+    lasttime=time.time()
 
 def print_values():
     print "x_angle:", x_angle
@@ -128,4 +134,4 @@ initialize_gyro()
 x_angle = 0
 y_angle = 0
 z_angle = 0
-
+lasttime = time.time()

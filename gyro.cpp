@@ -2,12 +2,18 @@
     
 void Gyro::Gyro(){
     
-    
-    
+   mpu6050 mpu; 
+           
+
+    // orientation/motion vars
+    Quaternion q;     
+    VectorFloat gravity
+    float ypr[3]; 
 }
 
     
-void Gyro::setup() {
+void Gyro::setup()
+ {
     // initialize device
     printf("Initializing I2C devices...\n");
     mpu.initialize();
@@ -45,12 +51,26 @@ void Gyro::setup() {
         printf("DMP Initialization failed (code %d)\n", devStatus);
     }
 }
-    
-float* Gyro::getypr(){
+  
+void Gyro::getypr()
+{
     mpu.dmpGetQuaternion(&q, fifoBuffer);
     mpu.dmpGetGravity(&gravity, &q);
     mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-
-    return *ypr;
     
+}
+
+float getYaw()
+{
+    return ypr[0];
+}
+
+float getPitch()
+{
+    return ypr[1];
+}
+
+float getRoll()
+{
+return ypr[2];
 }

@@ -10,21 +10,22 @@
 #ifndef GYRO_H
 #define GYRO_h
 
-class Gyro : public mpu{
+class Gyro{
 public:
-    // orientation/motion vars
-    Quaternion q;           // [w, x, y, z]         quaternion container
-    VectorInt16 aa;         // [x, y, z]            accel sensor measurements
-    VectorInt16 aaReal;     // [x, y, z]            gravity-free accel sensor measurements
-    VectorInt16 aaWorld;    // [x, y, z]            world-frame accel sensor measurements       
-    VectorFloat gravity;    // [x, y, z]            gravity vector
-    float euler[3];         // [psi, theta, phi]    Euler angle container
-    float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
+
     
-   void setup();
-   float* getypr();
-   
-private:
+    Gyro();
+    
+    void setup();
+    void getYPR();
+    float getYaw();
+    float getPitch()
+    float getRoll();   
+protected:
     mpu6050 mpu;
-    
+
+    // orientation/motion vars
+    Quaternion q;           // [w, x, y, z]         quaternion container     
+    VectorFloat gravity;    // [x, y, z]            gravity vector
+    float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
 #endif

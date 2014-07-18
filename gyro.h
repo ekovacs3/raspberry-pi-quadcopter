@@ -8,9 +8,9 @@
 #include "MPU6050_6Axis_MotionApps20.h"
 
 #ifndef GYRO_H
-#define GYRO_h
+#define GYRO_H
 
-class Gyro : public mpu{
+class Gyro{
 public:
     // orientation/motion vars
     Quaternion q;           // [w, x, y, z]         quaternion container
@@ -24,7 +24,7 @@ public:
    void setup();
    float* getypr();
    
-private:
+protected:
     mpu6050 mpu;
     
 #endif

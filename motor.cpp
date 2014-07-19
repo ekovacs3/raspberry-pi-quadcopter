@@ -3,13 +3,13 @@
 Motor::Motor(int p)
 {
 	pin = p;
-	softPwmCreate(p, 0, 100);
+	softServoSetup(p);
 }
 
 void Motor::set(int s)
 {
-	speed = s;
-	softPwmWrite(pin, speed);
+	speed = s*15 - 250;
+	softServoWrite(pin, speed);
 }
 
 int Motor::get()

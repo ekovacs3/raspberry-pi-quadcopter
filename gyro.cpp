@@ -1,14 +1,12 @@
 #include "gyro.h"
     
-void Gyro::Gyro(){
-    
-   mpu6050 mpu; 
-           
+Gyro::Gyro(){
+    MPU6050 mpu; 
 
-    // orientation/motion vars
-    Quaternion q;     
-    VectorFloat gravity
-    float ypr[3]; 
+    dmpReady = false;
+    ypr[0] = 0;
+    ypr[1] = 0;
+    ypr[2] = 0;
 }
 
     
@@ -52,7 +50,7 @@ void Gyro::setup()
     }
 }
   
-void Gyro::getypr()
+void Gyro::getYPR()
 {
     mpu.dmpGetQuaternion(&q, fifoBuffer);
     mpu.dmpGetGravity(&gravity, &q);
@@ -62,15 +60,15 @@ void Gyro::getypr()
 
 float getYaw()
 {
-    return ypr[0];
+    return ypr[0] * 180/M_PI;
 }
 
 float getPitch()
 {
-    return ypr[1];
+    return ypr[1] * 180/M_PI;
 }
 
 float getRoll()
 {
-return ypr[2];
+return ypr[2] * 180/M_PI;
 }

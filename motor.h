@@ -1,5 +1,5 @@
 #include <wiringPi.h>
-#include <softPwm.h>
+#include <softServo.h>
 
 #ifndef MOTOR_H
 #define MOTOR_H

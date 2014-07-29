@@ -18,9 +18,13 @@ using namespace std;
 MPU6050 mpu;
 
 Motor front (18);
+int f = 0
 Motor right (23);
+int r = 0;
 Motor left (24);
+int l = 0;
 Motor back (25);
+int b = 0;
 
 // MPU control/status vars
 bool dmpReady = false;  // set true if DMP init was successful
@@ -104,25 +108,47 @@ void refreshGyro() {
         mpu.dmpGetQuaternion(&q, fifoBuffer);
         mpu.dmpGetGravity(&gravity, &q);
         mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
+        printf("ypr  %7.2f %7.2f %7.2f    ", ypr[0] * 180/M_PI, ypr[1] * 180/M_PI, ypr[2] * 180/M_PI); 
+        printf("\n");
     }
 }
 
-void rollPID()
+void rollP(int target, int power)
 {
-
-
+    int roll = ypr[2] * 180/M_PI;
+    int powerdif = (target - roll) * .2;
+    r = power + powerdif;
+    b = power - powerdif;
 }
 
-void pitchPID()
+void pitchP(int target, int power)
 {
-
+    int pitch = ypr[1] * 180/M_PI;
+    int powerdif = (target - pitch) * .2;
+    f = power + powerdif;
+    b = power - powerdif;
 }
 
 int main() 
-{
+{4
     setup();
     usleep(100000);
 
     gpioInitialise();
+    
+    float motorPower = 0;
+
+    while(true){
+        std::cout << "input a motor power";
+        std::cin >> motorPower;
+        std::cout << "you input:" << motorPower << "\n";
+        for(int i = 0; i < 50; i++)
+        {
+            refreshGyro();
+            rollP(0, motorPower);
+            pitchP(0, motorPower);
+            usleep(20000);
+        }
+    }
    
 }

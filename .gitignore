@@ -1,7 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-
+*.txt
 # C extensions
 *.so
 
@@ -54,3 +54,4 @@ docs/_build/
 
 .DS_STORE
 
+.*.swp

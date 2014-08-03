@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <math.h>
+#include <iostream>
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
 #include "Motor.h"
@@ -18,7 +19,7 @@ using namespace std;
 MPU6050 mpu;
 
 Motor front (18);
-int f = 0
+int f = 0;
 Motor right (23);
 int r = 0;
 Motor left (24);
@@ -130,12 +131,11 @@ void pitchP(int target, int power)
 }
 
 int main() 
-{4
+{ 
+    gpioInitialise();
     setup();
     usleep(100000);
 
-    gpioInitialise();
-    
     float motorPower = 0;
 
     while(true){

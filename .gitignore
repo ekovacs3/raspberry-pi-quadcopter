@@ -4,6 +4,9 @@ __pycache__/
 *.txt
 # C extensions
 *.so
+.o
+
+demo_dmp
 
 # Distribution / packaging
 .Python

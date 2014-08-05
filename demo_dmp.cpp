@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include <string.h>
 #include <math.h>
-#include <iostream>
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
 #include "Motor.h"
@@ -26,6 +25,7 @@ Motor left (24);
 int l = 0;
 Motor back (25);
 int b = 0;
+
 
 // MPU control/status vars
 bool dmpReady = false;  // set true if DMP init was successful
@@ -95,60 +95,69 @@ void refreshGyro() {
     if (!dmpReady) return;
     // get current FIFO count
     fifoCount = mpu.getFIFOCount();
-
+	
     if (fifoCount == 1024) {
         // reset so we can continue cleanly
         mpu.resetFIFO();
         printf("FIFO overflow!\n");
-
-    // otherwise, check for DMP data ready interrupt (this should happen frequently)
-    } else if (fifoCount >= 42) {
-        // read a packet from FIFO
-        mpu.getFIFOBytes(fifoBuffer, packetSize);
-        
-        mpu.dmpGetQuaternion(&q, fifoBuffer);
-        mpu.dmpGetGravity(&gravity, &q);
-        mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-        printf("ypr  %7.2f %7.2f %7.2f    ", ypr[0] * 180/M_PI, ypr[1] * 180/M_PI, ypr[2] * 180/M_PI); 
-        printf("\n");
-    }
+// otherwise, check for DMP data ready interrupt (this should happen frequently)
+	} else if (fifoCount >= 42) {
+	    // read a packet from FIFO
+	    mpu.getFIFOBytes(fifoBuffer, packetSize);
+	    
+	    mpu.dmpGetQuaternion(&q, fifoBuffer);
+	    mpu.dmpGetGravity(&gravity, &q);
+	    mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
+	    //printf("ypr  %7.2f %7.2f %7.2f    ", ypr[0] * 180/M_PI, ypr[1] * 180/M_PI, ypr[2] * 180/M_PI); 
+	    //printf("\n");
+	}
+    usleep(10000);
 }
 
 void rollP(int target, int power)
 {
     int roll = ypr[2] * 180/M_PI;
     int powerdif = (target - roll) * .2;
-    r = power + powerdif;
-    b = power - powerdif;
+    r = (int) power + powerdif;
+    l = (int) power - powerdif;
 }
 
 void pitchP(int target, int power)
 {
     int pitch = ypr[1] * 180/M_PI;
     int powerdif = (target - pitch) * .2;
-    f = power + powerdif;
-    b = power - powerdif;
+    f = (int) power + powerdif;
+    b = (int) power - powerdif;
+}
+
+void setMotorPower()
+{
+    front.set(f);
+    right.set(r);
+    left.set(l);
+    back.set(b);
+	printf("front:%i back:%i left:%i right:%i \n", f, b, l, r);
 }
 
 int main() 
-{ 
-    gpioInitialise();
+{
+	gpioInitialise();
+
     setup();
     usleep(100000);
 
-    float motorPower = 0;
+    
+    float motorPower = 15;
 
     while(true){
-        std::cout << "input a motor power";
-        std::cin >> motorPower;
-        std::cout << "you input:" << motorPower << "\n";
-        for(int i = 0; i < 50; i++)
-        {
-            refreshGyro();
-            rollP(0, motorPower);
-            pitchP(0, motorPower);
-            usleep(20000);
-        }
+		for(int i = 0; i < 20; i++)
+		{
+        	refreshGyro();
+        	rollP(0, motorPower);
+        	pitchP(0, motorPower);
+        	usleep(15000);
+		}
+		setMotorPower();
     }
    
 }

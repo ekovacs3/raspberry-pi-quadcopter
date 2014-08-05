@@ -3,6 +3,7 @@
 
 Motor::Motor(int p)
 {
+    gpioInitialise();
     pin = p;
     gpioServo(pin, 1000);
 }

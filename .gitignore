@@ -4,7 +4,7 @@ __pycache__/
 *.txt
 # C extensions
 *.so
-.o
+*.o
 
 demo_dmp
 

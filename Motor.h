@@ -4,6 +4,7 @@
 class Motor
 {
 public:
+    Motor(int pini);
     Motor(int pini, float pi, bool positivei);
     void set(int s);
     void pset(int s, float current, float target);

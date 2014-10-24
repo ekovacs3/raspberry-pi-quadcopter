@@ -1,6 +1,13 @@
 #include "Motor.h"
 #include <pigpio.h>
 
+Motor::Motor(int pini)
+{
+    gpioInitialise();
+    pin = pini;
+    gpioServo(pin, 1000);
+}
+
 Motor::Motor(int pini, float pi, bool positivei)
 {
     gpioInitialise();
@@ -17,7 +24,7 @@ void Motor::set(int s)
     gpioServo(pin, speed);
 }
 
-void pset(int s, float current, float target)
+void Motopset(int s, float current, float target)
 {
 	if(positive)
 	{

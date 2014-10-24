@@ -7,6 +7,7 @@
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
 #include "Motor.h"
+#include "Map.h"
 #include <pigpio.h>
 
 using namespace std;
@@ -17,13 +18,14 @@ using namespace std;
 // AD0 high = 0x69
 MPU6050 mpu;
 
-Motor front (18);
+
+Motor front (FRONTMOTOR);
 int f = 0;
-Motor right (23);
+Motor right (RIGHTMOTOR);
 int r = 0;
-Motor left (24);
+Motor left (LEFTMOTOR);
 int l = 0;
-Motor back (25);
+Motor back (BACKMOTOR;
 int b = 0;
 
 

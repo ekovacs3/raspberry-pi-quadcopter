@@ -17,8 +17,6 @@ $(CMN_OBJS) $(DMP_OBJS) $(RAW_OBJS) : $(HDRS)
 demo_dmp: $(CMN_OBJS) $(DMP_OBJS)
 	$(CXX) -o $@ $^ -lm -lpigpio -lpthread -lrt
 
-
-
 clean:
 	rm -f $(CMN_OBJS) $(DMP_OBJS) demo_dmp 
 

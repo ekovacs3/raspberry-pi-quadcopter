@@ -9,6 +9,7 @@
 #include "Motor.h"
 #include "Map.h"
 #include <pigpio.h>
+#include <thread>
 
 using namespace std;
 
@@ -18,6 +19,7 @@ using namespace std;
 // AD0 high = 0x69
 MPU6050 mpu;
 
+float motorPower = 10;
 
 Motor front (FRONTMOTOR);
 int f = 0;
@@ -89,7 +91,7 @@ void setup() {
 
 
 // ================================================================
-// ===                    MAIN PROGRAM LOOP                     ===
+// ===                     MAIN Gyro Loop                       ===
 // ================================================================
 
 void refreshGyro() {
@@ -141,6 +143,15 @@ void setMotorPower()
 	printf("front:%i back:%i left:%i right:%i \n", f, b, l, r);
 }
 
+void* getInput(void*)
+{
+    while(true)
+    {
+        cout << "Please input the speed:";
+        cin >> motorPower;
+    }
+}
+
 int main() 
 {
 	gpioInitialise();
@@ -148,8 +159,7 @@ int main()
     setup();
     usleep(100000);
 
-    
-    float motorPower = 15;
+    thread input (getInput);
 
     while(true){
 		for(int i = 0; i < 20; i++)

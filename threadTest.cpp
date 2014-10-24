@@ -1,13 +1,16 @@
 #include <iostream>
-#include <pthread.h>
+#include <thread>
 #include <unistd.h>
 #include <stdlib.h>
+#include <mutex>
 
 int speed = 0;
 
 using namespace std;
 
-void* getInput(void*)
+mutex mtx;
+
+void getInput()
 {
 	while(true)
 	{
@@ -17,22 +20,14 @@ void* getInput(void*)
 }
 int main()
 {
-	pthread_t inputThread;
 
-	int test;
-	test = pthread_create(&inputThread , NULL, getInput, NULL);
-
-	if(test)
-	{
-		cout << "Unable to create thread\n";
-		exit(1);
-	}
+	thread input (getInput);
 
 	while(true)
 	{
 		//motor.Set(speed);
 		cout << speed << endl;
 
-		usleep(1000000);
+		usleep(1000);
 	}
 }

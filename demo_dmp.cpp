@@ -7,10 +7,10 @@
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
 #include "Motor.h"
-#include "Map.h"
+#include "map.h"
 #include <pigpio.h>
 #include <thread>
-
+#include <iostream>
 using namespace std;
 
 // class default I2C address is 0x68
@@ -21,13 +21,13 @@ MPU6050 mpu;
 
 float motorPower = 10;
 
-Motor front (FRONTMOTOR);
+Motor fMotor (FRONTMOTOR, MOTORP, true);
 int f = 0;
-Motor right (RIGHTMOTOR);
+Motor rMotor (RIGHTMOTOR, MOTORP, true);
 int r = 0;
-Motor left (LEFTMOTOR);
+Motor lMotor (LEFTMOTOR, MOTORP, false);
 int l = 0;
-Motor back (BACKMOTOR;
+Motor bMotor (BACKMOTOR, MOTORP, false);
 int b = 0;
 
 
@@ -99,7 +99,7 @@ void refreshGyro() {
     if (!dmpReady) return;
     // get current FIFO count
     fifoCount = mpu.getFIFOCount();
-	
+
     if (fifoCount == 1024) {
         // reset so we can continue cleanly
         mpu.resetFIFO();
@@ -108,12 +108,12 @@ void refreshGyro() {
 	} else if (fifoCount >= 42) {
 	    // read a packet from FIFO
 	    mpu.getFIFOBytes(fifoBuffer, packetSize);
-	    
+
 	    mpu.dmpGetQuaternion(&q, fifoBuffer);
 	    mpu.dmpGetGravity(&gravity, &q);
 	    mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-	    //printf("ypr  %7.2f %7.2f %7.2f    ", ypr[0] * 180/M_PI, ypr[1] * 180/M_PI, ypr[2] * 180/M_PI); 
-	    //printf("\n");
+	    printf("ypr  %7.2f %7.2f %7.2f    ", ypr[0] * 180/M_PI, ypr[1] * 180/M_PI, ypr[2] * 180/M_PI); 
+	    printf("\n");
 	}
     usleep(10000);
 }
@@ -121,7 +121,7 @@ void refreshGyro() {
 void rollP(int target, int power)
 {
     int roll = ypr[2] * 180/M_PI;
-    int powerdif = (target - roll) * .2;
+    int powerdif = (target - roll) * 1;
     r = (int) power + powerdif;
     l = (int) power - powerdif;
 }
@@ -129,26 +129,26 @@ void rollP(int target, int power)
 void pitchP(int target, int power)
 {
     int pitch = ypr[1] * 180/M_PI;
-    int powerdif = (target - pitch) * .2;
+    int powerdif = (target - pitch) * 1;
     f = (int) power + powerdif;
     b = (int) power - powerdif;
 }
 
 void setMotorPower()
 {
-    front.set(f);
-    right.set(r);
-    left.set(l);
-    back.set(b);
-	printf("front:%i back:%i left:%i right:%i \n", f, b, l, r);
+    fMotor.set(f);
+    rMotor.set(r);
+    lMotor.set(l);
+    bMotor.set(b);
+    //cout << "\nFront:" << f << "\nRight:" << r << "\nLeft:" << l << "\nBack:" << b;
 }
 
-void* getInput(void*)
+void getInput()
 {
     while(true)
     {
-        cout << "Please input the speed:";
-        cin >> motorPower;
+        std::cout << "Please input the speed:";
+        std::cin >> motorPower;
     }
 }
 

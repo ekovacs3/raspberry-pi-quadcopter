@@ -1,6 +1,6 @@
 //File for all constants
 
-#define MOTORP .2
+#define MOTORP 5
 #define MOTORI 0
 #define MOTORD 0
 

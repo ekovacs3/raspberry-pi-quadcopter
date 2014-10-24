@@ -20,11 +20,19 @@ Motor::Motor(int pini, float pi, bool positivei)
 //input speed 0 to 100 and convert to 1000usec to 2000usec
 void Motor::set(int s)
 {
+    if(speed >= 100)
+    {
+        speed = 99;
+    }
+    else if(speed <= 0)
+    {
+        speed = 1;
+    }
     speed = (s+100)*10;
     gpioServo(pin, speed);
 }
 
-void Motopset(int s, float current, float target)
+void Motor::pset(int s, float current, float target)
 {
 	if(positive)
 	{

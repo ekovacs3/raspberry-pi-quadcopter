@@ -99,7 +99,7 @@ void refreshGyro() {
     if (!dmpReady) return;
     // get current FIFO count
     fifoCount = mpu.getFIFOCount();
-
+    cout << "fifoCount: " << fifoCount << endl;
     if (fifoCount == 1024) {
         // reset so we can continue cleanly
         mpu.resetFIFO();
@@ -112,8 +112,9 @@ void refreshGyro() {
 	    mpu.dmpGetQuaternion(&q, fifoBuffer);
 	    mpu.dmpGetGravity(&gravity, &q);
 	    mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-	    printf("ypr  %7.2f %7.2f %7.2f    ", ypr[0] * 180/M_PI, ypr[1] * 180/M_PI, ypr[2] * 180/M_PI); 
+	    printf("ypr  %7.2f %7.2f %7.2f    ", ypr[0] * 180/M_PI, ypr[1] * 180/M_PI, ypr[2] * 180/M_PI);
 	    printf("\n");
+            mpu.resetFIFO();
 	}
     usleep(10000);
 }
@@ -136,10 +137,10 @@ void pitchP(int target, int power)
 
 void setMotorPower()
 {
-    fMotor.set(f);
-    rMotor.set(r);
-    lMotor.set(l);
-    bMotor.set(b);
+    fMotor.pset(motorPower, ypr[1], 0);
+    rMotor.pset(motorPower, ypr[2], 0);
+    lMotor.pset(motorPower, ypr[2], 0);
+    bMotor.pset(motorPower, ypr[1], 0);
     //cout << "\nFront:" << f << "\nRight:" << r << "\nLeft:" << l << "\nBack:" << b;
 }
 

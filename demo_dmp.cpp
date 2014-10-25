@@ -148,8 +148,8 @@ void getInput()
 {
     while(true)
     {
-        std::cout << "Please input the speed:";
-        std::cin >> motorPower;
+        cout << "Please input the speed:";
+        scin >> motorPower;
     }
 }
 

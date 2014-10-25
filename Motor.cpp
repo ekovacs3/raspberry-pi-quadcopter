@@ -30,17 +30,20 @@ void Motor::set(int s)
     }
     speed = (s+100)*10;
     gpioServo(pin, speed);
+    cout << speed << endl;
 }
 
 void Motor::pset(int s, float current, float target)
 {
 	if(positive)
 	{
-		set(s + pf(current, target));
+		speed = s + pf(current, target);
+        set(speed);
 	}
 	else
 	{
-		set(s - pf(current, target));
+		speed = s - pf(current, target);
+        set(speed);
 	}
 }
 

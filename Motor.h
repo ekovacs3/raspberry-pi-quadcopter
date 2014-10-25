@@ -8,6 +8,7 @@ public:
     Motor(int pini, float pi, bool positivei);
     void set(int s);
     void pset(int s, float current, float target);
+    int getSpeed();
     int pf(float current, float target);
 protected:
 	float pv;

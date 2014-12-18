@@ -1,5 +1,6 @@
 #include "Motor.h"
 #include <pigpio.h>
+#include <iostream>
 
 Motor::Motor(int pini)
 {
@@ -30,7 +31,7 @@ void Motor::set(int s)
     }
     speed = (s+100)*10;
     gpioServo(pin, speed);
-    cout << speed << endl;
+    std::cout << speed << std::endl;
 }
 
 void Motor::pset(int s, float current, float target)

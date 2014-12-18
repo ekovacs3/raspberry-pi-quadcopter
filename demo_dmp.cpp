@@ -21,13 +21,13 @@ MPU6050 mpu;
 
 float motorPower = 10;
 
-Motor fMotor (FRONTMOTOR, MOTORP, true);
+Motor fMotor (FRONTMOTOR, MOTORP, false);
 int f = 0;
-Motor rMotor (RIGHTMOTOR, MOTORP, true);
+Motor rMotor (RIGHTMOTOR, MOTORP, false);
 int r = 0;
-Motor lMotor (LEFTMOTOR, MOTORP, false);
+Motor lMotor (LEFTMOTOR, MOTORP, true);
 int l = 0;
-Motor bMotor (BACKMOTOR, MOTORP, false);
+Motor bMotor (BACKMOTOR, MOTORP, true);
 int b = 0;
 
 
@@ -149,7 +149,7 @@ void getInput()
     while(true)
     {
         cout << "Please input the speed:";
-        scin >> motorPower;
+        cin >> motorPower;
     }
 }
 

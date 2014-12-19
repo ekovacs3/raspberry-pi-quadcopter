@@ -1,7 +1,7 @@
 //File for all constants
 
 #define MOTORP 25
-#define MOTORI 0
+#define MOTORI 10
 #define MOTORD 0
 
 #define FRONTMOTOR 18

@@ -5,15 +5,19 @@ class Motor
 {
 public:
     Motor(int pini);
-    Motor(int pini, float pi, bool positivei);
+    Motor(int pini, float pi, bool positivein);
+    Motor(int pini, float pi, float di, bool positivein);
     void set(int s);
     void pset(int s, float current, float target);
+    void pdSet(int s, float current, float target);
     int getSpeed();
-    int pf(float current, float target);
+    int error(float current, float target);
 protected:
-	float pv;
+	float pVal;
+    float dVal;
     int pin;
     int speed;
+    int previousError;
     bool positive;
 };
 

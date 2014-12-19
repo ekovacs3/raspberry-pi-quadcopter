@@ -11,6 +11,7 @@
 #include <pigpio.h>
 #include <thread>
 #include <iostream>
+
 using namespace std;
 
 // class default I2C address is 0x68
@@ -137,11 +138,11 @@ void pitchP(int target, int power)
 
 void setMotorPower()
 {
-    fMotor.pdsSet(motorPower, ypr[1], 0);
+    fMotor.pdSet(motorPower, ypr[1], 0);
     rMotor.pdSet(motorPower, ypr[2], 0);
     lMotor.pdSet(motorPower, ypr[2], 0);
     bMotor.pdSet(motorPower, ypr[1], 0);
-    //cout << "\nFront:" << f << "\nRight:" << r << "\nLeft:" << l << "\nBack:" << b;
+    cout << "\nFront:" << fMotor.getSpeed() << "\nRight:" << rMotor.getSpeed() << "\nLeft:" << lMotor.getSpeed() << "\nBack:" << bMotor.getSpeed() << endl;;
 }
 
 void getInput()
@@ -168,6 +169,8 @@ int main()
        	pitchP(0, motorPower);
        	usleep(15000);
 	setMotorPower();
+	//cout << fMotor.getSpeed() << " " << rMotor.getSpeed();
+        //cout << " " << lMotor.getSpeed() << " " << bMotor.getSpeed() << endl;
     }
 
 }

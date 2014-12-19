@@ -155,7 +155,7 @@ void getInput()
 
 int main() 
 {
-	gpioInitialise();
+    gpioInitialise();
 
     setup();
     usleep(100000);
@@ -163,14 +163,11 @@ int main()
     thread input (getInput);
 
     while(true){
-		for(int i = 0; i < 20; i++)
-		{
-        	refreshGyro();
-        	rollP(0, motorPower);
-        	pitchP(0, motorPower);
-        	usleep(15000);
-		}
-		setMotorPower();
+       	refreshGyro();
+       	rollP(0, motorPower);
+       	pitchP(0, motorPower);
+       	usleep(15000);
+	setMotorPower();
     }
-   
+
 }

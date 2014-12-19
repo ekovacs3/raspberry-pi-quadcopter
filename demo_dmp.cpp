@@ -142,7 +142,7 @@ void setMotorPower()
     rMotor.pdSet(motorPower, ypr[2], 0);
     lMotor.pdSet(motorPower, ypr[2], 0);
     bMotor.pdSet(motorPower, ypr[1], 0);
-    cout << "\nFront:" << fMotor.getSpeed() << "\nRight:" << rMotor.getSpeed() << "\nLeft:" << lMotor.getSpeed() << "\nBack:" << bMotor.getSpeed() << endl;;
+    //cout << "\nFront:" << fMotor.getSpeed() << "\nRight:" << rMotor.getSpeed() << "\nLeft:" << lMotor.getSpeed() << "\nBack:" << bMotor.getSpeed() << endl;;
 }
 
 void getInput()
@@ -168,9 +168,8 @@ int main()
        	rollP(0, motorPower);
        	pitchP(0, motorPower);
        	usleep(15000);
-	setMotorPower();
-	//cout << fMotor.getSpeed() << " " << rMotor.getSpeed();
-        //cout << " " << lMotor.getSpeed() << " " << bMotor.getSpeed() << endl;
+	    setMotorPower();
+	    cout << fMotor.getSpeed() << " " << rMotor.getSpeed() << " " << lMotor.getSpeed() << " " << bMotor.getSpeed() << endl;
     }
 
 }

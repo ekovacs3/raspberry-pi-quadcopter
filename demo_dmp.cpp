@@ -22,14 +22,10 @@ MPU6050 mpu;
 
 float motorPower = 10;
 
-Motor fMotor (FRONTMOTOR, MOTORP, MOTORD, false);
-int f = 0;
-Motor rMotor (RIGHTMOTOR, MOTORP, MOTORD, false);
-int r = 0;
-Motor lMotor (LEFTMOTOR, MOTORP, MOTORD, true);
-int l = 0;
-Motor bMotor (BACKMOTOR, MOTORP, MOTORD, true);
-int b = 0;
+Motor fMotor (FRONTMOTOR, MOTORP, false);
+Motor rMotor (RIGHTMOTOR, MOTORP, false);
+Motor lMotor (LEFTMOTOR, MOTORP, true);
+Motor bMotor (BACKMOTOR, MOTORP, true);
 
 
 // MPU control/status vars
@@ -138,10 +134,10 @@ void pitchP(int target, int power)
 
 void setMotorPower()
 {
-    fMotor.pdSet(motorPower, ypr[1], 0);
-    rMotor.pdSet(motorPower, ypr[2], 0);
-    lMotor.pdSet(motorPower, ypr[2], 0);
-    bMotor.pdSet(motorPower, ypr[1], 0);
+    fMotor.pSet(motorPower, ypr[1], 0);
+    rMotor.pSet(motorPower, ypr[2], 0);
+    lMotor.pSet(motorPower, ypr[2], 0);
+    bMotor.pSet(motorPower, ypr[1], 0);
     //cout << "\nFront:" << fMotor.getSpeed() << "\nRight:" << rMotor.getSpeed() << "\nLeft:" << lMotor.getSpeed() << "\nBack:" << bMotor.getSpeed() << endl;;
 }
 

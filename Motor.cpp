@@ -55,16 +55,16 @@ void Motor::set(int s)
 void Motor::pSet(int s, float current, float target)
 {
     int currentError = error(current, target);
+    int pOut = currentError * pVal;
 	if(positive)
 	{
-		speed = static_cast<int>(s + (currentError * pVal));
-        set(speed);
+		speed = s + pOut;
 	}
 	else
 	{
-		speed = static_cast<int>(s - (currentError * pVal));
-        set(speed);
+		speed = s - pOut;
 	}
+    set(speed);
 }
 
 void Motor::pdSet(int s, float current, float target)
@@ -76,13 +76,13 @@ void Motor::pdSet(int s, float current, float target)
     dOut = (previousError - currentError) * dVal;
     if(positive)
     {
-        speed = static_cast<int>(s + pOut + dOut);
-        set(speed);
+        speed = s + pOut + dOut;
     }
     else
     {
-        speed = static_cast<int>(s - (pOut+dOut));
+        speed = s - (pOut+dOut);
     }
+    set(speed);
     previousError = currentError;
 }
 

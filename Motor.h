@@ -17,6 +17,7 @@ protected:
     float dVal;
     int pin;
     int speed;
+    int gpioSpeed;
     int previousError;
     bool positive;
 };

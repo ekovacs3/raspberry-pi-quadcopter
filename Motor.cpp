@@ -49,7 +49,8 @@ void Motor::set(int s)
     {
         speed = s;
     }
-    gpioServo(pin, ((speed+100)*10));
+    spioSpeed = (speed + 100) * 10;
+    gpioServo(pin, gpioSpeed);
 }
 
 void Motor::pSet(int s, float current, float target)

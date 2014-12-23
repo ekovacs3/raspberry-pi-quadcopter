@@ -11,14 +11,14 @@ public:
     void pSet(int s, float current, float target);
     void pdSet(int s, float current, float target);
     int getSpeed();
-    int error(float current, float target);
+    float error(float current, float target);
 protected:
 	float pVal;
     float dVal;
     int pin;
-    int speed;
+    float speed;
     int gpioSpeed;
-    int previousError;
+    float previousError;
     bool positive;
 };
 

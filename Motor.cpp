@@ -49,14 +49,14 @@ void Motor::set(int s)
     {
         speed = s;
     }
-    spioSpeed = (static_cast<int>(speed) + 100) * 10;
+    gpioSpeed = (static_cast<int>(speed) + 100) * 10;
     gpioServo(pin, gpioSpeed);
 }
 
-void Motor::pSet(float) s, float current, float target)
+void Motor::pSet(float s, float current, float target)
 {
-    int currentError = error(current, target);
-    int pOut = currentError * pVal;
+    float currentError = error(current, target);
+    float pOut = currentError * pVal;
 	if(positive)
 	{
 		speed = s + pOut;
@@ -92,7 +92,7 @@ int Motor::getSpeed()
     return speed;
 }
 
-int Motor::error(float current, float target)
+float Motor::error(float current, float target)
 {
 	return current - target;
 }

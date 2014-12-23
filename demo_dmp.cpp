@@ -20,7 +20,7 @@ using namespace std;
 // AD0 high = 0x69
 MPU6050 mpu;
 
-float motorPower = 10;
+float motorPower = 0;
 
 Motor fMotor (FRONTMOTOR, MOTORP, false);
 Motor rMotor (RIGHTMOTOR, MOTORP, false);
@@ -113,7 +113,6 @@ void refreshGyro() {
 	    printf("\n");
             mpu.resetFIFO();
 	}
-    usleep(10000);
 }
 
 void setMotorPower()
@@ -149,5 +148,4 @@ int main()
 	    cout << fMotor.getSpeed() << " " << rMotor.getSpeed() << " " << lMotor.getSpeed() << " " << bMotor.getSpeed() << endl;
 	    usleep(15000);
 	}
-
 }

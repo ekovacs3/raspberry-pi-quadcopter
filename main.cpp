@@ -1,27 +1,31 @@
-#include "motor.h"
+#include "Quadcopter.h"
+#include <thread>
 #include <iostream>
 #include <unistd.h>
 
+void getInput();
+
 int main(){
+    float motorPower
+    thread input (getInput())
+    Quadcopter quad;
 
-    wiringPiSetup();    
+    while(motorPower != -1)
+    {
+        quad.setMotorPower(motorPower);
+        quad.refreshGyroValues();
+        quad.applyMotorPowers();
+        usleep(20000);
+    }
+    quad.setMotorPower(0);
 
-    Motor front (1);
-
-	front.set(100);
-	std::cout << "set to 100 \n";
-	sleep(4);
-
-	front.set(0);
-    std::cout << "set to 0 \n";
-	sleep(4);
-
-	front.set(30);
-	std::cout << "set to 30 \n";
-	sleep(4);
-
-	front.set(0);
-	std::cout << "set to 0 \n";
 }
 
-
+void getInput()
+{
+    while(true)
+    {
+        std::cout << "Please input the speed:";
+        std::cin >> motorPower;
+    }
+}

@@ -8,16 +8,17 @@ public:
     Motor(int pini, float pi, bool positivein);
     Motor(int pini, float pi, float di, bool positivein);
     void set(int s);
-    void pSet(int s, float current, float target);
-    void pdSet(int s, float current, float target);
+    void pSet(float s, float current, float target);
+    void pdSet(float s, float current, float target);
     int getSpeed();
-    int error(float current, float target);
+    float error(float current, float target);
 protected:
 	float pVal;
     float dVal;
     int pin;
-    int speed;
-    int previousError;
+    float speed;
+    int gpioSpeed;
+    float previousError;
     bool positive;
 };
 

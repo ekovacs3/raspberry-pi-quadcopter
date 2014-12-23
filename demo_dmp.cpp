@@ -116,28 +116,12 @@ void refreshGyro() {
     usleep(10000);
 }
 
-void rollP(int target, int power)
-{
-    int roll = ypr[2] * 180/M_PI;
-    int powerdif = (target - roll) * 1;
-    r = (int) power + powerdif;
-    l = (int) power - powerdif;
-}
-
-void pitchP(int target, int power)
-{
-    int pitch = ypr[1] * 180/M_PI;
-    int powerdif = (target - pitch) * 1;
-    f = (int) power + powerdif;
-    b = (int) power - powerdif;
-}
-
 void setMotorPower()
 {
-    fMotor.pSet(motorPower, ypr[1], 0);
-    rMotor.pSet(motorPower, ypr[2], 0);
-    lMotor.pSet(motorPower, ypr[2], 0);
-    bMotor.pSet(motorPower, ypr[1], 0);
+    fMotor.pdSet(motorPower, ypr[1], 0);
+    rMotor.pdSet(motorPower, ypr[2], 0);
+    lMotor.pdSet(motorPower, ypr[2], 0);
+    bMotor.pdSet(motorPower, ypr[1], 0);
     //cout << "\nFront:" << fMotor.getSpeed() << "\nRight:" << rMotor.getSpeed() << "\nLeft:" << lMotor.getSpeed() << "\nBack:" << bMotor.getSpeed() << endl;;
 }
 
@@ -161,11 +145,9 @@ int main()
 
     while(true){
        	refreshGyro();
-       	rollP(0, motorPower);
-       	pitchP(0, motorPower);
-       	usleep(15000);
 	    setMotorPower();
 	    cout << fMotor.getSpeed() << " " << rMotor.getSpeed() << " " << lMotor.getSpeed() << " " << bMotor.getSpeed() << endl;
-    }
+	    usleep(15000);
+	}
 
 }

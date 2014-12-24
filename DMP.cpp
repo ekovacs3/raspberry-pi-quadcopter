@@ -1,4 +1,14 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdint.h>
+#include <string.h>
+#include <math.h>
+#include "I2Cdev.h"
+#include <iostream>
 #include "DMP.h"
+
+using namespace std;
 
 DMP::DMP()
 {
@@ -50,7 +60,7 @@ void DMP::refreshGyro() {
     if (!dmpReady) return;
     // get current FIFO count
     fifoCount = mpu.getFIFOCount();
-    cout << "fifoCount: " << fifoCount << endl;
+    std::cout << "fifoCount: " << fifoCount << std::endl;
     if (fifoCount == 1024) {
         // reset so we can continue cleanly
         mpu.resetFIFO();

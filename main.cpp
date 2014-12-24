@@ -4,10 +4,9 @@
 #include <unistd.h>
 
 void getInput();
-
+float motorPower;
 int main(){
-    float motorPower
-    thread input (getInput())
+    std::thread input (getInput);
     Quadcopter quad;
 
     while(motorPower != -1)

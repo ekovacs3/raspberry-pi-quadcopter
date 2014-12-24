@@ -1,14 +1,14 @@
 #include "Quadcopter.h"
 //#include <iostream>
 
-Quadcopter::Quadcopter
+Quadcopter::Quadcopter()
 {
     fMotor = new Motor(FRONTMOTOR, MOTORP, false);
     rMotor = new Motor(RIGHTMOTOR, MOTORP, false);
     lMotor = new Motor(LEFTMOTOR, MOTORP, true);
     bMotor = new Motor(BACKMOTOR, MOTORP, true);
     dmp = new DMP();
-    motorPower = 0;
+    motorPower = 0.0;
 }
 
 void Quadcopter::refreshGyroValues()
@@ -31,10 +31,10 @@ void Quadcopter::applyMotorPowers()
 
 void Quadcopter::setMotorPower(float power)
 {
-    motorPower = p;
+    motorPower = power;
 }
 
-~Quadcopter()
+Quadcopter::~Quadcopter()
 {
     delete fMotor;
     delete rMotor;

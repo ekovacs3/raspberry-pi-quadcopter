@@ -1,18 +1,19 @@
 //Network.cpp
-#include Network.h
-#include map.h
+#include "Network.h"
+#include "map.h"
 #include <thread>
+
+using boost::asio::ip::tcp;
 
 Network::Network()
 {
-    std::thread(startServer).detach();
+    //std::thread(startServer, io_service).detach();
 }
 
 void Network::startServer()
 {
     try
     {
-
         boost::asio::io_service io_service;
         server(io_service, PORT);
     }
@@ -22,7 +23,7 @@ void Network::startServer()
     }
 }
 
-void Network::session(tcp::socket sock)
+void session(tcp::socket sock)
 {
     try
     {
@@ -60,14 +61,14 @@ void Network::server(boost::asio::io_service& io_service, unsigned short port)
     }
 }
 
-void getData(float& data)
+void Network::getData(std::array<float, 3> data)
 {
     data[0] = inypr[0];
     data[1] = inypr[1];
     data[2] = inypr[2];
 }
 
-void sendData(float& data)
+void Network::sendData(std::array<float, 3> data)
 {
     outypr[0] = data[0];
     outypr[1] = data[1];

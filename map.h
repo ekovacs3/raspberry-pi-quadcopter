@@ -10,4 +10,4 @@
 #define BACKMOTOR 25
 
 #define PORT 4999
-#define MAX_LENGTH 
+#define MAX_LENGTH 1024

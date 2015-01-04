@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <string.h>
+#include <array>
 #include <math.h>
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
@@ -44,7 +45,8 @@ Quaternion q;           // [w, x, y, z]         quaternion container
 VectorFloat gravity;    // [x, y, z]            gravity vector
 float euler[3];         // [psi, theta, phi]    Euler angle container
 float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
-float target[3] = {0,0,0};
+std::array<float, 3> heading;
+std::array<float, 3> target;
 
 // ================================================================
 // ===                      INITIAL SETUP                       ===
@@ -114,7 +116,10 @@ void refreshGyro() {
 	    mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
 	    printf("ypr  %7.2f %7.2f %7.2f    ", ypr[0] * 180/M_PI, ypr[1] * 180/M_PI, ypr[2] * 180/M_PI);
 	    printf("\n");
-            mpu.resetFIFO();
+        heading[0] = ypr[0];
+        heading[1] = ypr[1];
+        heading[2] = ypr[2];
+        mpu.resetFIFO();
 	}
     usleep(10000);
 }
@@ -145,12 +150,13 @@ int main()
     usleep(100000);
 
     thread input (getInput);
+    thread server (net.startServer())
 
     while(true){
        	refreshGyro();
 	    setMotorPower();
 
-        net.sendData(ypr);
+        net.sendData(heading);
         net.getData(target);
 
 	    cout << fMotor.getSpeed() << " " << rMotor.getSpeed() << " " << lMotor.getSpeed() << " " << bMotor.getSpeed() << endl;

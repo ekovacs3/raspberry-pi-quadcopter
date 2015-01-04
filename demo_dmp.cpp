@@ -7,6 +7,7 @@
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
 #include "Motor.h"
+#include "Network.h"
 #include "map.h"
 #include <pigpio.h>
 #include <thread>
@@ -27,6 +28,8 @@ Motor rMotor (RIGHTMOTOR, MOTORP, false);
 Motor lMotor (LEFTMOTOR, MOTORP, true);
 Motor bMotor (BACKMOTOR, MOTORP, true);
 
+Network net();
+
 
 // MPU control/status vars
 bool dmpReady = false;  // set true if DMP init was successful
@@ -41,7 +44,7 @@ Quaternion q;           // [w, x, y, z]         quaternion container
 VectorFloat gravity;    // [x, y, z]            gravity vector
 float euler[3];         // [psi, theta, phi]    Euler angle container
 float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
-
+float target[3] = {0,0,0};
 
 // ================================================================
 // ===                      INITIAL SETUP                       ===
@@ -146,8 +149,12 @@ int main()
     while(true){
        	refreshGyro();
 	    setMotorPower();
+
+        net.sendData(ypr);
+        net.getData(target);
+
 	    cout << fMotor.getSpeed() << " " << rMotor.getSpeed() << " " << lMotor.getSpeed() << " " << bMotor.getSpeed() << endl;
-	    usleep(15000);
+	    usleep(20000);
 	}
 
 }

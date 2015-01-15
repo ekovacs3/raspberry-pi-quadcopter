@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <math.h>
+#include <fstream>
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
 #include "Motor.h"
@@ -83,6 +84,7 @@ void setup() {
         // 2 = DMP configuration updates failed
         // (if it's going to break, usually the code will be 1)
         printf("DMP Initialization failed (code %d)\n", devStatus);
+        exit(1);
     }
 }
 
@@ -140,6 +142,24 @@ int main()
 
     setup();
     usleep(100000);
+
+    ifstream pdvalues;
+
+    pdvalues.open("pdvals.txt");
+    if(pdvalues.fail())
+    {
+        exit(2);
+    }
+    float pi,pd;
+
+    pdvalues >> pi >> pd;
+
+    cout << pi << endl << pi;
+
+    fMotor.pdvals(pi,pd);
+    rMotor.pdvals(pi,pd);
+    lotor.pdvals(pi,pd);
+    bMotor.pdvals(pi,pd);
 
     thread input (getInput);
 

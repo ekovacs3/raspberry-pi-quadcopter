@@ -87,6 +87,12 @@ void Motor::pdSet(float s, float current, float target)
     previousError = currentError;
 }
 
+void Motor::pdvals(float pi, float pd)
+{
+    pVal = pi;
+    dVal = pd;
+}
+
 int Motor::getSpeed()
 {
     return speed;

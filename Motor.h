@@ -10,7 +10,7 @@ public:
     void set(int s);
     void pSet(float s, float current, float target);
     void pdSet(float s, float current, float target);
-    void pdvals(fload pi, float pd);
+    void pdvals(float pi, float pd);
     int getSpeed();
     float error(float current, float target);
 protected:

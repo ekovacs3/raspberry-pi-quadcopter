@@ -21,7 +21,7 @@ using namespace std;
 // AD0 high = 0x69
 MPU6050 mpu;
 
-float motorPower = 10;
+float motorPower = 0;
 
 Motor fMotor (FRONTMOTOR, MOTORP, false);
 Motor rMotor (RIGHTMOTOR, MOTORP, false);
@@ -151,14 +151,14 @@ int main()
         exit(2);
     }
     float pi,pd;
-
+	string str;
     pdvalues >> pi >> pd;
 
-    cout << pi << endl << pi;
+    cout << pi << endl << pd << endl;;
 
     fMotor.pdvals(pi,pd);
     rMotor.pdvals(pi,pd);
-    lotor.pdvals(pi,pd);
+    lMotor.pdvals(pi,pd);
     bMotor.pdvals(pi,pd);
 
     thread input (getInput);

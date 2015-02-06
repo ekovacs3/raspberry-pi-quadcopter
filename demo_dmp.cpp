@@ -120,10 +120,10 @@ void refreshGyro() {
 
 void setMotorPower()
 {
-    fMotor.pdSet(motorPower, ypr[1], 0);
-    rMotor.pdSet(motorPower, ypr[2], 0);
-    lMotor.pdSet(motorPower, ypr[2], 0);
-    bMotor.pdSet(motorPower, ypr[1], 0);
+    fMotor.setData(motorPower, ypr[1], 0, ypr[0], 0);
+    rMotor.setData(motorPower, ypr[2], 0, ypr[0], 0);
+    lMotor.setData(motorPower, ypr[2], 0, ypr[0], 0);
+    bMotor.setData(motorPower, ypr[1], 0, ypr[0], 0);
     //cout << "\nFront:" << fMotor.getSpeed() << "\nRight:" << rMotor.getSpeed() << "\nLeft:" << lMotor.getSpeed() << "\nBack:" << bMotor.getSpeed() << endl;;
 }
 
@@ -150,16 +150,17 @@ int main()
     {
         exit(2);
     }
-    float pi,pd;
+    //yaw/pitch p, yaw/pitch d, roll p, roll d
+    float ypp,ypd,rp,rd;
 	string str;
-    pdvalues >> pi >> pd;
+    pdvalues >> ypp >> ypd, rp, rd;
 
-    cout << pi << endl << pd << endl;;
+    cout << ypp << endl << ypd << endl;
 
-    fMotor.pdvals(pi,pd);
-    rMotor.pdvals(pi,pd);
-    lMotor.pdvals(pi,pd);
-    bMotor.pdvals(pi,pd);
+    fMotor.pdvals(ypp,ypd,rp,rd);
+    rMotor.pdvals(ypp,ypd,rp,rd);
+    lMotor.pdvals(ypp,ypd,rp,rd);
+    bMotor.pdvals(ypp,ypd,rp,rd);
 
     thread input (getInput);
 

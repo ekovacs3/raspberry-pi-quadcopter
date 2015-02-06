@@ -6,8 +6,8 @@ Motor::Motor(int pini)
     gpioInitialise();
     pin = pini;
     gpioServo(pin, 1000);
-    pVal = 0;
-    dVal = 0;
+    ypp = 0;
+    ypd = 0;
     positive = true;
     previousError = 0;
 }
@@ -17,8 +17,8 @@ Motor::Motor(int pini, float pi, bool positivein)
     gpioInitialise();
     pin = pini;
     gpioServo(pin, 1000);
-    pVal = pi;
-    dVal = 0;
+    ypp = pi;
+    ypd = 0;
     positive = positivein;
     previousError = 0;
 }
@@ -28,8 +28,8 @@ Motor::Motor(int pini, float pi, float di, bool positivein)
     gpioInitialise();
     pin = pini;
     gpioServo(pin, 1000);
-    pVal = pi;
-    dVal = di;
+    ypp = pi;
+    ypd = di;
     positive = positivein;
     previousError = 0;
 }
@@ -56,7 +56,7 @@ void Motor::set(int s)
 void Motor::pSet(float s, float current, float target)
 {
     float currentError = error(current, target);
-    float pOut = currentError * pVal;
+    float pOut = currentError * ypp;
 	if(positive)
 	{
 		speed = s + pOut;
@@ -68,29 +68,45 @@ void Motor::pSet(float s, float current, float target)
     set(speed);
 }
 
-void Motor::pdSet(float s, float current, float target)
+void Motor::pdSet(float s)
 {
-    float pOut = 0;
-    float dOut = 0;
-    float currentError = error(current, target);
-    pOut = currentError * pVal;
-    dOut = (previousError - currentError) * dVal;
+    //
+    //Yaw/Pitch
+    //
+    ypCurrentError = error(ypCurrent, ypTarget);
+    yppOut = ypCurrentError * ypp;
+    ypdOut = (ypPreviousError - ypCurrentError) * ypd;
+
+
+
+    //
+    //Roll
+    //
+
+    rCurrentError = error(rCurrent, rTarget);
+    rpOut = rCurrentError * rp;
+    rdOut = (rPreviousError - rCurrentError) * rd;
+
     if(positive)
     {
-        speed = s + pOut + dOut;
+        speed = s + yppOut + ypdOut + rpOut + rdOut;
     }
     else
     {
-        speed = s - (pOut+dOut);
+        speed = s - (yppOut + ypdOut + rpOut + rdOut);
     }
+
     set(speed);
-    previousError = currentError;
+    ypPreviousError = ypCurrentError;
+    rPreviousError = rCurrentError
 }
 
-void Motor::pdvals(float pi, float pd)
+void Motor::pdvals(float yppi, float ypdi, float rpi, float rdi)
 {
-    pVal = pi;
-    dVal = pd;
+    ypp = yppi;
+    ypd = yppd;
+    rp = rpi;
+    rd = rdi;
 }
 
 int Motor::getSpeed()
@@ -101,4 +117,13 @@ int Motor::getSpeed()
 float Motor::error(float current, float target)
 {
 	return current - target;
+}
+
+float Motor::setData(float s, float ypCurrenti, float ypTargeti, float rCurrenti, rTargeti)
+{
+    ypCurrent = ypCurrenti;
+    ypTarget = ypTargeti;
+    rCurrent = rCurrenti;
+    rTarget = rTargeti;
+    pdSet(s);
 }

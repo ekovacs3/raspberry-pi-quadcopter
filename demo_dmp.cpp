@@ -28,6 +28,16 @@ Motor rMotor (RIGHTMOTOR, MOTORP, false);
 Motor lMotor (LEFTMOTOR, MOTORP, true);
 Motor bMotor (BACKMOTOR, MOTORP, true);
 
+bool quit = false;
+
+//control target positions
+float yTarget = 0;
+float pTarget = 0;
+float rTarget = 0;
+//trim to compensate for drifiting/badly mounted gyro
+float yTrim = 0;
+float pTrim = 0;
+float rTrim = 0;
 
 // MPU control/status vars
 bool dmpReady = false;  // set true if DMP init was successful
@@ -120,20 +130,43 @@ void refreshGyro() {
 
 void setMotorPower()
 {
-    fMotor.setData(motorPower, ypr[1], 0, ypr[0], 0);
-    rMotor.setData(motorPower, ypr[2], 0, ypr[0], 0);
-    lMotor.setData(motorPower, ypr[2], 0, ypr[0], 0);
-    bMotor.setData(motorPower, ypr[1], 0, ypr[0], 0);
+    float yaw = yTarget - yTrim;
+    float pitch = pTarget - pTrim;
+    float roll = rTarget - rTrim;
+    fMotor.setData(motorPower, ypr[1], pitch, ypr[0], yaw);
+    bMotor.setData(motorPower, ypr[1], pitch, ypr[0], yaw);
+    rMotor.setData(motorPower, ypr[2], pitch, ypr[0], yaw);
+    lMotor.setData(motorPower, ypr[2], pitch, ypr[0], yaw);
     //cout << "\nFront:" << fMotor.getSpeed() << "\nRight:" << rMotor.getSpeed() << "\nLeft:" << lMotor.getSpeed() << "\nBack:" << bMotor.getSpeed() << endl;;
 }
 
 void getInput()
 {
-    while(true)
-    {
-        cout << "Please input the speed:";
-        cin >> motorPower;
+  system("stty raw");
+  do
+  {
+    // Wait for single character
+    input = getchar();
+
+    switch (input) {
+      case 'j':
+        rTrim++;
+        break;
+      case 'l':
+        rTrim--;
+        break;
+      case 'i':
+        pTrim++;
+        break;
+      case 'k';
+        pTrim--;
+        break;
     }
+
+  }while(input != '.');
+  // Reset terminal to normal "cooked" mode
+  system("stty cooked");
+  quit = true;
 }
 
 int main()
@@ -152,9 +185,8 @@ int main()
     }
     //roll/pitch p, roll/pitch d, yaw p, yaw d
     float rpp,rpd,yp,yd;
-	string str;
-    pdvalues >> rpp >> rpd, yp, yd;
-
+    string str;
+    pdvalues >> rpp >> rpd >> yp >> yd;
     cout << rpp << endl << rpd << endl;
 
     fMotor.pdvals(rpp,rpd,yp,yd);
@@ -162,9 +194,19 @@ int main()
     lMotor.pdvals(rpp,rpd,yp,yd);
     bMotor.pdvals(rpp,rpd,yp,yd);
 
+    ifstream trimvalues;
+
+    trimvalues.open("trim.txt");
+    if(trimvalues.fail())
+    {
+      exit(3);
+    }
+
+    trimvalues >> yTrim >> pTrim >> rTrim;
+
     thread input (getInput);
 
-    while(true){
+    while(!quit){
       refreshGyro();
 	    setMotorPower();
 	    cout << fMotor.getSpeed() << " " << rMotor.getSpeed() << " " << lMotor.getSpeed() << " " << bMotor.getSpeed() << endl;

@@ -153,19 +153,19 @@ int main()
     //yaw/pitch p, yaw/pitch d, roll p, roll d
     float ypp,ypd,rp,rd;
 	string str;
-    pdvalues >> ypp >> ypd, rp, rd;
+    pdvalues >> rpp >> rpd, yp, yd;
 
-    cout << ypp << endl << ypd << endl;
+    cout << rpp << endl << rpd << endl;
 
-    fMotor.pdvals(ypp,ypd,rp,rd);
-    rMotor.pdvals(ypp,ypd,rp,rd);
-    lMotor.pdvals(ypp,ypd,rp,rd);
-    bMotor.pdvals(ypp,ypd,rp,rd);
+    fMotor.pdvals(rpp,rpd,yp,yd);
+    rMotor.pdvals(rpp,rpd,yp,yd);
+    lMotor.pdvals(rpp,rpd,yp,yd);
+    bMotor.pdvals(rpp,rpd,yp,yd);
 
     thread input (getInput);
 
     while(true){
-       	refreshGyro();
+      refreshGyro();
 	    setMotorPower();
 	    cout << fMotor.getSpeed() << " " << rMotor.getSpeed() << " " << lMotor.getSpeed() << " " << bMotor.getSpeed() << endl;
 	    usleep(15000);

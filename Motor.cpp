@@ -6,10 +6,11 @@ Motor::Motor(int pini)
     gpioInitialise();
     pin = pini;
     gpioServo(pin, 1000);
-    ypp = 0;
-    ypd = 0;
+    rpp = 0;
+    rpd = 0;
     positive = true;
-    previousError = 0;
+    rppreviousError = 0;
+    ypreviousError = 0;
 }
 
 Motor::Motor(int pini, float pi, bool positivein)
@@ -17,10 +18,11 @@ Motor::Motor(int pini, float pi, bool positivein)
     gpioInitialise();
     pin = pini;
     gpioServo(pin, 1000);
-    ypp = pi;
-    ypd = 0;
+    rpp = pi;
+    rpd = 0;
     positive = positivein;
-    previousError = 0;
+    rppreviousError = 0;
+    ypreviousError = 0;
 }
 
 Motor::Motor(int pini, float pi, float di, bool positivein)
@@ -28,10 +30,11 @@ Motor::Motor(int pini, float pi, float di, bool positivein)
     gpioInitialise();
     pin = pini;
     gpioServo(pin, 1000);
-    ypp = pi;
-    ypd = di;
+    rpp = pi;
+    rpd = di;
     positive = positivein;
-    previousError = 0;
+    rppreviousError = 0;
+    ypreviousError = 0;
 }
 
 //input speed 0 to 100 and convert to 1000usec to 2000usec
@@ -56,7 +59,7 @@ void Motor::set(int s)
 void Motor::pSet(float s, float current, float target)
 {
     float currentError = error(current, target);
-    float pOut = currentError * ypp;
+    float pOut = currentError * rpp;
 	if(positive)
 	{
 		speed = s + pOut;
@@ -71,42 +74,42 @@ void Motor::pSet(float s, float current, float target)
 void Motor::pdSet(float s)
 {
     //
-    //Yaw/Pitch
+    //roll/Pitch
     //
-    ypCurrentError = error(ypCurrent, ypTarget);
-    yppOut = ypCurrentError * ypp;
-    ypdOut = (ypPreviousError - ypCurrentError) * ypd;
+    rpCurrentError = error(rpCurrent, rpTarget);
+    rppOut = rpCurrentError * rpp;
+    rpdOut = (rpPreviousError - rpCurrentError) * rpd;
 
 
 
     //
-    //Roll
+    //yaw
     //
 
-    rCurrentError = error(rCurrent, rTarget);
-    rpOut = rCurrentError * rp;
-    rdOut = (rPreviousError - rCurrentError) * rd;
+    yCurrentError = error(yCurrent, yTarget);
+    ypOut = yCurrentError * yp;
+    ydOut = (yPreviousError - yCurrentError) * yd;
 
     if(positive)
     {
-        speed = s + yppOut + ypdOut + rpOut + rdOut;
+        speed = s + rppOut + rpdOut + ypOut + ydOut;
     }
     else
     {
-        speed = s - (yppOut + ypdOut + rpOut + rdOut);
+        speed = s - (rppOut + rpdOut + ypOut + ydOut);
     }
 
     set(speed);
-    ypPreviousError = ypCurrentError;
-    rPreviousError = rCurrentError
+    rpPreviousError = rpCurrentError;
+    yPreviousError = yCurrentError
 }
 
-void Motor::pdvals(float yppi, float ypdi, float rpi, float rdi)
+void Motor::pdvals(float rppi, float rpdi, float ypi, float rdi)
 {
-    ypp = yppi;
-    ypd = yppd;
-    rp = rpi;
-    rd = rdi;
+    rpp = rppi;
+    rpd = rppd;
+    yp = ypi;
+    yd = ydi;
 }
 
 int Motor::getSpeed()
@@ -119,11 +122,11 @@ float Motor::error(float current, float target)
 	return current - target;
 }
 
-float Motor::setData(float s, float ypCurrenti, float ypTargeti, float rCurrenti, rTargeti)
+float Motor::setData(float s, float rpCurrenti, float rpTargeti, float yCurrenti, yTargeti)
 {
-    ypCurrent = ypCurrenti;
-    ypTarget = ypTargeti;
-    rCurrent = rCurrenti;
-    rTarget = rTargeti;
+    rpCurrent = rpCurrenti;
+    rpTarget = rpTargeti;
+    yCurrent = yCurrenti;
+    yTarget = yTargeti;
     pdSet(s);
 }

@@ -10,35 +10,35 @@ public:
     void set(int s);
     void pSet(float s, float current, float target);
     void pdSet(float s);
-    void pdvals(float yppi, float ypdi, float rpi, float rdi);
+    void pdvals(float rppi, float rpdi, float ypi, float ydi);
     int getSpeed();
     float error(float current, float target);
-    float setData(float s, float ypCurrenti, float ypTargeti, float rCurrenti, rTargeti);
+    float setData(float s, float rpCurrenti, float rpTargeti, float yCurrenti, yTargeti);
 protected:
-	float ypp; //yaw/pitch p
-    float ypd; //yaw/pitch d
-    float rp; //roll p
-    float rd; //roll d
+	  float rpp; //yaw/pitch p
+    float rpd; //yaw/pitch d
+    float yp; //roll p
+    float yd; //roll d
 
     int pin;
     float speed;
     int gpioSpeed;
     bool positive;
 
-    float yppOut;
-    float ypdOut;
-    float ypCurrentError;
-    float ypPreviousError;
+    float rppOut;
+    float rpdOut;
+    float rpCurrentError;
+    float rpPreviousError;
 
-    float rpOut;
-    float rdOut;
-    float rCurrentError;
-    float rpreviousError;
+    float ypOut;
+    float ydOut;
+    float yCurrentError;
+    float ypreviousError;
 
-    float ypCurrent; //Yaw/Pitch Current Position
-    float ypTarget; //Yaw/Pitch Target Position
-    float rCurrent; //Roll Current Position
-    float rTarget; //Roll Target Posision
+    float rpCurrent; //Roll/Pitch Current Position
+    float rpTarget; //Roll/Pitch Target Position
+    float yCurrent; //yaw Current Position
+    float yTarget; //yaw Target Posision
 };
 
 #endif

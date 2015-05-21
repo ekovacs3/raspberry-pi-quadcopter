@@ -13,7 +13,7 @@ public:
     void pdvals(float rppi, float rpdi, float ypi, float ydi);
     int getSpeed();
     float error(float current, float target);
-    float setData(float s, float rpCurrenti, float rpTargeti, float yCurrenti, yTargeti);
+    void setData(float s, float rpCurrenti, float rpTargeti, float yCurrenti, float yTargeti);
 protected:
 	  float rpp; //yaw/pitch p
     float rpd; //yaw/pitch d
@@ -33,7 +33,7 @@ protected:
     float ypOut;
     float ydOut;
     float yCurrentError;
-    float ypreviousError;
+    float yPreviousError;
 
     float rpCurrent; //Roll/Pitch Current Position
     float rpTarget; //Roll/Pitch Target Position

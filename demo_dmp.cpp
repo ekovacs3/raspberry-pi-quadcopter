@@ -150,8 +150,8 @@ int main()
     {
         exit(2);
     }
-    //yaw/pitch p, yaw/pitch d, roll p, roll d
-    float ypp,ypd,rp,rd;
+    //roll/pitch p, roll/pitch d, yaw p, yaw d
+    float rpp,rpd,yp,yd;
 	string str;
     pdvalues >> rpp >> rpd, yp, yd;
 

@@ -9,8 +9,13 @@ Motor::Motor(int pini)
     rpp = 0;
     rpd = 0;
     positive = true;
+<<<<<<< HEAD
     rppreviousError = 0;
     ypreviousError = 0;
+=======
+    rpPreviousError = 0;
+    yPreviousError = 0;
+>>>>>>> 8fa7781224c20d2980c047b4961f28f6a6313eb2
 }
 
 Motor::Motor(int pini, float pi, bool positivein)
@@ -21,8 +26,13 @@ Motor::Motor(int pini, float pi, bool positivein)
     rpp = pi;
     rpd = 0;
     positive = positivein;
+<<<<<<< HEAD
     rppreviousError = 0;
     ypreviousError = 0;
+=======
+    rpPreviousError = 0;
+    yPreviousError = 0;
+>>>>>>> 8fa7781224c20d2980c047b4961f28f6a6313eb2
 }
 
 Motor::Motor(int pini, float pi, float di, bool positivein)
@@ -33,8 +43,13 @@ Motor::Motor(int pini, float pi, float di, bool positivein)
     rpp = pi;
     rpd = di;
     positive = positivein;
+<<<<<<< HEAD
     rppreviousError = 0;
     ypreviousError = 0;
+=======
+    rpPreviousError = 0;
+    yPreviousError = 0;
+>>>>>>> 8fa7781224c20d2980c047b4961f28f6a6313eb2
 }
 
 //input speed 0 to 100 and convert to 1000usec to 2000usec
@@ -101,6 +116,7 @@ void Motor::pdSet(float s)
 
     set(speed);
     rpPreviousError = rpCurrentError;
+<<<<<<< HEAD
     yPreviousError = yCurrentError
 }
 
@@ -108,6 +124,15 @@ void Motor::pdvals(float rppi, float rpdi, float ypi, float rdi)
 {
     rpp = rppi;
     rpd = rppd;
+=======
+    yPreviousError = yCurrentError;
+}
+
+void Motor::pdvals(float rppi, float rpdi, float ypi, float ydi)
+{
+    rpp = rppi;
+    rpd = rppi;
+>>>>>>> 8fa7781224c20d2980c047b4961f28f6a6313eb2
     yp = ypi;
     yd = ydi;
 }
@@ -122,7 +147,11 @@ float Motor::error(float current, float target)
 	return current - target;
 }
 
+<<<<<<< HEAD
 float Motor::setData(float s, float rpCurrenti, float rpTargeti, float yCurrenti, yTargeti)
+=======
+void Motor::setData(float s, float rpCurrenti, float rpTargeti, float yCurrenti, float yTargeti)
+>>>>>>> 8fa7781224c20d2980c047b4961f28f6a6313eb2
 {
     rpCurrent = rpCurrenti;
     rpTarget = rpTargeti;
